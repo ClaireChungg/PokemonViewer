@@ -8,12 +8,20 @@
 import UIKit
 
 class ViewController: UIViewController {
-
+    // MARK: - Properties
+    @IBOutlet weak var logoImage: UIImageView!
+    @IBOutlet weak var image: UIImageView!
+    @IBOutlet var startButton: UIButton!
+    @IBOutlet weak var welcomeText: UILabel!
+    
+    // MARK: - Methods
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+
+        image.contentMode = .scaleAspectFill
+        image.layer.cornerRadius = 20
+        image.clipsToBounds = true
+        
+        welcomeText.font = UIFont.boldSystemFont(ofSize: 20)
     }
-
-
 }
-

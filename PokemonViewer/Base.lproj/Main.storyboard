@@ -1,24 +1,77 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13122.16" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13104.12"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22684"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="PokemonViewer" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" xcode11CocoaTouchSystemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="Gm5-EX-P1a">
+                                <rect key="frame" x="46.666666666666657" y="159" width="300" height="125"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="Gm5-EX-P1a" secondAttribute="height" multiplier="12:5" id="2tP-Gz-UIy"/>
+                                    <constraint firstAttribute="width" constant="300" id="PDZ-aO-Wk1"/>
+                                </constraints>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Tzn-XH-ovi">
+                                <rect key="frame" x="166" y="637" width="61.333333333333343" height="34"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="tinted" title="Start"/>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Welcome! Click to start!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Iad-eq-lik">
+                                <rect key="frame" x="106" y="566" width="181" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pikachu" translatesAutoresizingMaskIntoConstraints="NO" id="uov-Kl-P3e">
+                                <rect key="frame" x="46.666666666666657" y="336" width="300" height="180"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="300" id="6aP-28-Z4K"/>
+                                    <constraint firstAttribute="width" secondItem="uov-Kl-P3e" secondAttribute="height" multiplier="5:3" id="zME-fw-HNd"/>
+                                </constraints>
+                            </imageView>
+                        </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="Tzn-XH-ovi" firstAttribute="top" secondItem="Iad-eq-lik" secondAttribute="bottom" constant="50" id="3fo-Q6-LGj"/>
+                            <constraint firstItem="uov-Kl-P3e" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="6I4-Q9-eFu"/>
+                            <constraint firstItem="Tzn-XH-ovi" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="BeS-xs-mA7"/>
+                            <constraint firstItem="Gm5-EX-P1a" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="100" id="MRU-av-cea"/>
+                            <constraint firstItem="Iad-eq-lik" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="QSY-7d-K2U"/>
+                            <constraint firstItem="uov-Kl-P3e" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="g8c-2g-vdz"/>
+                            <constraint firstItem="Gm5-EX-P1a" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="iTV-hk-Ezu"/>
+                            <constraint firstItem="Iad-eq-lik" firstAttribute="top" secondItem="uov-Kl-P3e" secondAttribute="bottom" constant="50" id="kcO-or-ofo"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="image" destination="uov-Kl-P3e" id="lIh-Ih-EQ3"/>
+                        <outlet property="logoImage" destination="Gm5-EX-P1a" id="9To-jE-rCT"/>
+                        <outlet property="startButton" destination="Tzn-XH-ovi" id="bhD-k8-M5C"/>
+                        <outlet property="welcomeText" destination="Iad-eq-lik" id="d7V-29-ek8"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="130.53435114503816" y="-34.507042253521128"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="logo" width="1200" height="442"/>
+        <image name="pikachu" width="1280" height="720"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
 </document>
