@@ -24,11 +24,16 @@ class MainViewController: UIViewController, UITableViewDataSource {
     }
     
     private func fetchData(from urlString: String) {
+        struct PokemonResponse: Codable {
+            var results: [Pokemon]
+        }
+        
         guard let url = URL(string: urlString) else { return }
         
         URLSession.shared.dataTaskPublisher(for: url)
             .map(\.data)
             .decode(type: PokemonResponse.self, decoder: JSONDecoder())
+            .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { completion in
                 switch completion {
                 case .finished:
@@ -38,9 +43,7 @@ class MainViewController: UIViewController, UITableViewDataSource {
                 }
             }, receiveValue: { pokemonResponse in
                 self.pokemons = pokemonResponse.results
-                DispatchQueue.main.async {
-                    self.tableView.reloadData()
-                }
+                self.tableView.reloadData()
             })
             .store(in: &cancellables)
     }
