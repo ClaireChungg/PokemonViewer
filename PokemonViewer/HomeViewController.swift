@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class HomeViewController: UIViewController {
     // MARK: - Properties
     @IBOutlet weak var logoImage: UIImageView!
     @IBOutlet weak var image: UIImageView!

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="i41-TG-fcM">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22684"/>
@@ -8,16 +8,16 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
+        <!--Home View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="PokemonViewer" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="HomeViewController" customModule="PokemonViewer" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="Gm5-EX-P1a">
-                                <rect key="frame" x="46.666666666666657" y="159" width="300" height="125"/>
+                                <rect key="frame" x="46.666666666666657" y="161" width="300" height="125"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="Gm5-EX-P1a" secondAttribute="height" multiplier="12:5" id="2tP-Gz-UIy"/>
                                     <constraint firstAttribute="width" constant="300" id="PDZ-aO-Wk1"/>
@@ -27,6 +27,9 @@
                                 <rect key="frame" x="166" y="637" width="61.333333333333343" height="34"/>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="tinted" title="Start"/>
+                                <connections>
+                                    <segue destination="Bdu-68-sLK" kind="show" id="vgq-T0-3Ke"/>
+                                </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Welcome! Click to start!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Iad-eq-lik">
                                 <rect key="frame" x="106" y="566" width="181" height="21"/>
@@ -48,13 +51,14 @@
                             <constraint firstItem="Tzn-XH-ovi" firstAttribute="top" secondItem="Iad-eq-lik" secondAttribute="bottom" constant="50" id="3fo-Q6-LGj"/>
                             <constraint firstItem="uov-Kl-P3e" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="6I4-Q9-eFu"/>
                             <constraint firstItem="Tzn-XH-ovi" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="BeS-xs-mA7"/>
-                            <constraint firstItem="Gm5-EX-P1a" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="100" id="MRU-av-cea"/>
+                            <constraint firstItem="uov-Kl-P3e" firstAttribute="top" secondItem="Gm5-EX-P1a" secondAttribute="bottom" constant="50" id="IfF-5C-Eos"/>
                             <constraint firstItem="Iad-eq-lik" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="QSY-7d-K2U"/>
                             <constraint firstItem="uov-Kl-P3e" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="g8c-2g-vdz"/>
                             <constraint firstItem="Gm5-EX-P1a" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="iTV-hk-Ezu"/>
                             <constraint firstItem="Iad-eq-lik" firstAttribute="top" secondItem="uov-Kl-P3e" secondAttribute="bottom" constant="50" id="kcO-or-ofo"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="4wC-v4-nvu"/>
                     <connections>
                         <outlet property="image" destination="uov-Kl-P3e" id="lIh-Ih-EQ3"/>
                         <outlet property="logoImage" destination="Gm5-EX-P1a" id="9To-jE-rCT"/>
@@ -64,7 +68,39 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="130.53435114503816" y="-34.507042253521128"/>
+            <point key="canvasLocation" x="-34" y="-114"/>
+        </scene>
+        <!--Main View Controller-->
+        <scene sceneID="mXj-UK-H3x">
+            <objects>
+                <viewController id="Bdu-68-sLK" customClass="MainViewController" customModule="PokemonViewer" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="RTC-7Q-2tQ">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="pOw-CL-twE"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="6FZ-De-pjc"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="qCw-gr-hVB" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="881.67938931297704" y="-114.08450704225352"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="cQt-Ad-onA">
+            <objects>
+                <navigationController id="i41-TG-fcM" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="y84-cX-srk">
+                        <rect key="frame" x="0.0" y="59" width="393" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="DRC-9O-pj8"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="LRz-ZY-16x" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-960" y="-114"/>
         </scene>
     </scenes>
     <resources>
