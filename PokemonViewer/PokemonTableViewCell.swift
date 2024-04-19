@@ -40,7 +40,7 @@ class PokemonTableViewCell: UITableViewCell {
         NSLayoutConstraint.activate([
             nameLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10),
             nameLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
-            nameLabel.widthAnchor.constraint(equalTo: contentView.widthAnchor, constant: 100),
+            nameLabel.widthAnchor.constraint(equalTo: contentView.widthAnchor, multiplier: 0.3),
             nameLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -10),
             cellImageView.leadingAnchor.constraint(equalTo: nameLabel.trailingAnchor, constant: 10),
             cellImageView.topAnchor.constraint(equalTo: contentView.topAnchor),
