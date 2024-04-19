@@ -50,9 +50,10 @@ class MainViewController: UIViewController, UITableViewDataSource {
     
     private func setupTableView() {
         tableView = UITableView(frame: .zero, style: .plain)
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "PokemonCell")
+        tableView.register(PokemonTableViewCell.self, forCellReuseIdentifier: "PokemonCell")
         tableView.dataSource = self
         tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.rowHeight = 100
         view.addSubview(tableView)
         
         NSLayoutConstraint.activate([
@@ -69,8 +70,10 @@ class MainViewController: UIViewController, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "PokemonCell", for: indexPath)
-        cell.textLabel?.text = pokemons[indexPath.row].name
+        let cell = tableView.dequeueReusableCell(withIdentifier: "PokemonCell", for: indexPath) as! PokemonTableViewCell
+        guard let url = pokemons[indexPath.row].url else { return cell }
+        cell.url = url
+        cell.nameLabel.text = pokemons[indexPath.row].name
         return cell
     }
 }
