@@ -19,6 +19,7 @@ class PokemonTableViewCell: UITableViewCell {
     
     let cellImageView = UIImageView()
     let nameLabel = UILabel()
+    var cellShouldUpdate: (() -> Void)?
     private var cancellables = Set<AnyCancellable>()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -31,9 +32,8 @@ class PokemonTableViewCell: UITableViewCell {
     }
     
     private func setupViews() {
-        addSubview(nameLabel)
-        addSubview(cellImageView)
-        
+        contentView.addSubview(nameLabel)
+        contentView.addSubview(cellImageView)
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
         cellImageView.translatesAutoresizingMaskIntoConstraints = false
 
@@ -41,7 +41,10 @@ class PokemonTableViewCell: UITableViewCell {
             nameLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10),
             nameLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
             nameLabel.widthAnchor.constraint(equalTo: contentView.widthAnchor, constant: 100),
+            nameLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -10),
             cellImageView.leadingAnchor.constraint(equalTo: nameLabel.trailingAnchor, constant: 10),
+            cellImageView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            cellImageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
         ])
     }
 
@@ -77,6 +80,7 @@ class PokemonTableViewCell: UITableViewCell {
                 }
             }, receiveValue: { data in
                 self.cellImageView.image = UIImage(data: data)
+                self.cellShouldUpdate?()
             })
             .store(in: &cancellables)
     }
