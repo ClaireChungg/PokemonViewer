@@ -75,6 +75,12 @@ class MainViewController: UIViewController, UITableViewDataSource {
         guard let url = pokemons[indexPath.row].url else { return cell }
         cell.url = url
         cell.nameLabel.text = pokemons[indexPath.row].name
+        cell.cellShouldUpdate = {
+            // call this to re-render cell
+            // or you can use tableView.reloadData() instead (will update all cells)
+            tableView.beginUpdates()
+            tableView.endUpdates()
+        }
         return cell
     }
 }
