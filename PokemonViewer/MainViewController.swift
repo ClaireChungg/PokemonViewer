@@ -53,7 +53,8 @@ class MainViewController: UIViewController, UITableViewDataSource {
         tableView.register(PokemonTableViewCell.self, forCellReuseIdentifier: "PokemonCell")
         tableView.dataSource = self
         tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.rowHeight = 100
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = 100.0
         view.addSubview(tableView)
         
         NSLayoutConstraint.activate([
