@@ -6,13 +6,11 @@
 //
 
 import UIKit
-import Combine
 
 class MainViewController: UIViewController, UITableViewDataSource {
     // MARK: - Properties
     private var tableView: UITableView!
     private var pokemons: [Pokemon] = []
-    private var cancellables = Set<AnyCancellable>()
     
     // MARK: - Methods
     override func viewDidLoad() {
@@ -20,32 +18,48 @@ class MainViewController: UIViewController, UITableViewDataSource {
         self.setupTableView()
         
         let urlString = "https://pokeapi.co/api/v2/pokemon"
-        fetchData(from: urlString)
+        Task {
+            await fetchData(from: urlString)
+        }
     }
     
-    private func fetchData(from urlString: String) {
+    private func fetchData(from urlString: String) async {
+        guard let url = URL(string: urlString) else { return }
         struct PokemonResponse: Codable {
             var results: [Pokemon]
         }
-        
-        guard let url = URL(string: urlString) else { return }
-        
-        URLSession.shared.dataTaskPublisher(for: url)
-            .map(\.data)
-            .decode(type: PokemonResponse.self, decoder: JSONDecoder())
-            .receive(on: DispatchQueue.main)
-            .sink(receiveCompletion: { completion in
-                switch completion {
-                case .finished:
-                    break
-                case .failure(let error):
-                    print(String(describing: error))
-                }
-            }, receiveValue: { pokemonResponse in
-                self.pokemons = pokemonResponse.results
-                self.tableView.reloadData()
-            })
-            .store(in: &cancellables)
+
+        do {
+            let (data, _) = try await URLSession.shared.data(from: url)
+            let pokemonResponse = try JSONDecoder().decode(PokemonResponse.self, from: data)
+            self.pokemons = pokemonResponse.results
+            self.tableView.reloadData()
+        } catch {
+            print(String(describing: error))
+        }
+    }
+    
+    private func fetchDetailData(from url: URL?) async -> PokemonSprite? {
+        guard let url = url else { return nil }
+        do {
+            let (data, _) = try await URLSession.shared.data(from: url)
+            let pokemonSprite = try JSONDecoder().decode(PokemonSprite.self, from: data)
+            return pokemonSprite
+        } catch {
+            print(String(describing: error))
+        }
+        return nil
+    }
+    
+    private func fetchImage(from url: URL?) async -> UIImage? {
+        guard let url = url else { return nil }
+        do {
+            let (data, _) = try await URLSession.shared.data(from: url)
+            return UIImage(data: data)
+        } catch {
+            print(String(describing: error))
+        }
+        return nil
     }
     
     private func setupTableView() {
@@ -72,12 +86,10 @@ class MainViewController: UIViewController, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "PokemonCell", for: indexPath) as! PokemonTableViewCell
-        guard let url = pokemons[indexPath.row].url else { return cell }
-        cell.url = url
         cell.nameLabel.text = pokemons[indexPath.row].name
-        cell.cellShouldUpdate = {
-            // call this to re-render cell
-            // or you can use tableView.reloadData() instead (will update all cells)
+        Task {
+            pokemons[indexPath.row].sprite = await fetchDetailData(from: pokemons[indexPath.row].url)
+            cell.thumbnailImageView.image = await fetchImage(from: pokemons[indexPath.row].sprite?.imageUrl)
             tableView.beginUpdates()
             tableView.endUpdates()
         }
