@@ -7,7 +7,7 @@
 
 import UIKit
 
-class MainViewController: UIViewController, UITableViewDataSource {
+class MainViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     // MARK: - Properties
     private var tableView: UITableView!
     private var pokemons: [Pokemon] = []
@@ -20,6 +20,7 @@ class MainViewController: UIViewController, UITableViewDataSource {
         let urlString = "https://pokeapi.co/api/v2/pokemon"
         Task {
             await fetchData(from: urlString)
+            tableView.reloadData()
         }
     }
     
@@ -33,7 +34,6 @@ class MainViewController: UIViewController, UITableViewDataSource {
             let (data, _) = try await URLSession.shared.data(from: url)
             let pokemonResponse = try JSONDecoder().decode(PokemonResponse.self, from: data)
             self.pokemons = pokemonResponse.results
-            self.tableView.reloadData()
         } catch {
             print(String(describing: error))
         }
@@ -55,6 +55,7 @@ class MainViewController: UIViewController, UITableViewDataSource {
         tableView = UITableView(frame: .zero, style: .plain)
         tableView.register(PokemonTableViewCell.self, forCellReuseIdentifier: "PokemonCell")
         tableView.dataSource = self
+        tableView.delegate = self
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 100.0
@@ -86,5 +87,12 @@ class MainViewController: UIViewController, UITableViewDataSource {
             tableView.endUpdates()
         }
         return cell
+    }
+    
+    // MARK: - UITableViewDelegate
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let detailViewController = DetailViewController()
+        detailViewController.pokemon = pokemons[indexPath.row]
+        navigationController?.pushViewController(detailViewController, animated: true)
     }
 }
