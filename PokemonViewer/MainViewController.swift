@@ -11,8 +11,6 @@ class MainViewController: UIViewController, UITableViewDataSource {
     // MARK: - Properties
     private var tableView: UITableView!
     private var pokemons: [Pokemon] = []
-    private let imageCache = NSCache<NSURL, UIImage>()
-    private var detailFetchTask: Task<Void, Never>?
     
     // MARK: - Methods
     override func viewDidLoad() {
@@ -53,29 +51,6 @@ class MainViewController: UIViewController, UITableViewDataSource {
         return nil
     }
     
-    private func fetchImage(from url: URL?) async -> UIImage? {
-        guard let url = url else { return nil }
-        
-        if let cachedImage = imageCache.object(forKey: url as NSURL) {
-            return cachedImage
-        }
-        
-        do {
-            if let image = imageCache.object(forKey: url as NSURL) {
-                return image
-            } else {
-                let (data, _) = try await URLSession.shared.data(from: url)
-                guard let image = UIImage(data: data) else { return nil }
-                self.imageCache.setObject(image, forKey: url as NSURL)
-                return image
-            }
-        } catch {
-            print(String(describing: error))
-        }
-        
-        return nil
-    }
-    
     private func setupTableView() {
         tableView = UITableView(frame: .zero, style: .plain)
         tableView.register(PokemonTableViewCell.self, forCellReuseIdentifier: "PokemonCell")
@@ -99,14 +74,14 @@ class MainViewController: UIViewController, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        detailFetchTask?.cancel()
-        
         let cell = tableView.dequeueReusableCell(withIdentifier: "PokemonCell", for: indexPath) as! PokemonTableViewCell
-        cell.nameLabel.text = pokemons[indexPath.row].name
-        
-        detailFetchTask = Task {
+        Task {
             pokemons[indexPath.row].sprite = await fetchDetailData(from: pokemons[indexPath.row].url)
-            cell.thumbnailImageView.image = await fetchImage(from: pokemons[indexPath.row].sprite?.imageUrl)
+            cell.setupContent(pokemons[indexPath.row].name, pokemons[indexPath.row].sprite?.imageUrl)
+        }
+        cell.cellShouldUpdate = {
+            // call this to re-render cell
+            // or you can use tableView.reloadData() instead (will update all cells)
             tableView.beginUpdates()
             tableView.endUpdates()
         }

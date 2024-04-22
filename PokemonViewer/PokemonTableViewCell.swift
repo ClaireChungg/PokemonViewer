@@ -10,6 +10,9 @@ import UIKit
 class PokemonTableViewCell: UITableViewCell {
     let thumbnailImageView = UIImageView()
     let nameLabel = UILabel()
+    var cellShouldUpdate: (() -> Void)?
+    private let imageCache = NSCache<NSURL, UIImage>()
+    private var imageFetchTask: Task<Void, Never>?
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -36,8 +39,41 @@ class PokemonTableViewCell: UITableViewCell {
         ])
     }
     
+    func setupContent(_ name: String, _ imageUrl: URL?) {
+        self.nameLabel.text = name
+        imageFetchTask = Task {
+            self.thumbnailImageView.image = await self.fetchImage(from: imageUrl)
+        }
+    }
+    
+    func fetchImage(from url: URL?) async -> UIImage? {
+        guard let url = url else { return nil }
+        
+        if let cachedImage = imageCache.object(forKey: url as NSURL) {
+            return cachedImage
+        }
+        
+        do {
+            if let image = imageCache.object(forKey: url as NSURL) {
+                self.cellShouldUpdate?()
+                return image
+            } else {
+                let (data, _) = try await URLSession.shared.data(from: url)
+                guard let image = UIImage(data: data) else { return nil }
+                self.imageCache.setObject(image, forKey: url as NSURL)
+                self.cellShouldUpdate?()
+                return image
+            }
+        } catch {
+            print(String(describing: error))
+        }
+        
+        return nil
+    }
+    
     override func prepareForReuse() {
         super.prepareForReuse()
+        imageFetchTask?.cancel()
         thumbnailImageView.image = nil
     }
 }
