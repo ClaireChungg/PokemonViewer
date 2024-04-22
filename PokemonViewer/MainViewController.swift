@@ -11,6 +11,8 @@ class MainViewController: UIViewController, UITableViewDataSource {
     // MARK: - Properties
     private var tableView: UITableView!
     private var pokemons: [Pokemon] = []
+    private let imageCache = NSCache<NSURL, UIImage>()
+    private var detailFetchTask: Task<Void, Never>?
     
     // MARK: - Methods
     override func viewDidLoad() {
@@ -28,7 +30,7 @@ class MainViewController: UIViewController, UITableViewDataSource {
         struct PokemonResponse: Codable {
             var results: [Pokemon]
         }
-
+        
         do {
             let (data, _) = try await URLSession.shared.data(from: url)
             let pokemonResponse = try JSONDecoder().decode(PokemonResponse.self, from: data)
@@ -53,12 +55,24 @@ class MainViewController: UIViewController, UITableViewDataSource {
     
     private func fetchImage(from url: URL?) async -> UIImage? {
         guard let url = url else { return nil }
+        
+        if let cachedImage = imageCache.object(forKey: url as NSURL) {
+            return cachedImage
+        }
+        
         do {
-            let (data, _) = try await URLSession.shared.data(from: url)
-            return UIImage(data: data)
+            if let image = imageCache.object(forKey: url as NSURL) {
+                return image
+            } else {
+                let (data, _) = try await URLSession.shared.data(from: url)
+                guard let image = UIImage(data: data) else { return nil }
+                self.imageCache.setObject(image, forKey: url as NSURL)
+                return image
+            }
         } catch {
             print(String(describing: error))
         }
+        
         return nil
     }
     
@@ -78,16 +92,19 @@ class MainViewController: UIViewController, UITableViewDataSource {
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
     }
-
+    
     // MARK: - UITableViewDataSource
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return pokemons.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        detailFetchTask?.cancel()
+        
         let cell = tableView.dequeueReusableCell(withIdentifier: "PokemonCell", for: indexPath) as! PokemonTableViewCell
         cell.nameLabel.text = pokemons[indexPath.row].name
-        Task {
+        
+        detailFetchTask = Task {
             pokemons[indexPath.row].sprite = await fetchDetailData(from: pokemons[indexPath.row].url)
             cell.thumbnailImageView.image = await fetchImage(from: pokemons[indexPath.row].sprite?.imageUrl)
             tableView.beginUpdates()
