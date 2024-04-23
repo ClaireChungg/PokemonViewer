@@ -11,6 +11,7 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
     // MARK: - Properties
     private var tableView: UITableView!
     private var pokemons: [Pokemon] = []
+    private let networkManager: NetworkManager = .shared
     
     // MARK: - Methods
     override func viewDidLoad() {
@@ -19,36 +20,9 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         
         let urlString = "https://pokeapi.co/api/v2/pokemon"
         Task {
-            await fetchData(from: urlString)
+            self.pokemons = await networkManager.fetchData(from: urlString)
             tableView.reloadData()
         }
-    }
-    
-    private func fetchData(from urlString: String) async {
-        guard let url = URL(string: urlString) else { return }
-        struct PokemonResponse: Codable {
-            var results: [Pokemon]
-        }
-        
-        do {
-            let (data, _) = try await URLSession.shared.data(from: url)
-            let pokemonResponse = try JSONDecoder().decode(PokemonResponse.self, from: data)
-            self.pokemons = pokemonResponse.results
-        } catch {
-            print(String(describing: error))
-        }
-    }
-    
-    private func fetchDetailData(from url: URL?) async -> PokemonSprite? {
-        guard let url = url else { return nil }
-        do {
-            let (data, _) = try await URLSession.shared.data(from: url)
-            let pokemonSprite = try JSONDecoder().decode(PokemonSprite.self, from: data)
-            return pokemonSprite
-        } catch {
-            print(String(describing: error))
-        }
-        return nil
     }
     
     private func setupTableView() {
@@ -77,7 +51,7 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "PokemonCell", for: indexPath) as! PokemonTableViewCell
         Task {
-            pokemons[indexPath.row].sprite = await fetchDetailData(from: pokemons[indexPath.row].url)
+            pokemons[indexPath.row].sprite = await networkManager.fetchSprite(from: pokemons[indexPath.row].url)
             cell.setupContent(pokemons[indexPath.row].name, pokemons[indexPath.row].sprite?.imageUrl)
         }
         cell.cellShouldUpdate = {

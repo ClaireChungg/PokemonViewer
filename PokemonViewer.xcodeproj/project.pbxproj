@@ -22,6 +22,7 @@
 		7EB074F72BD204CF00C27D6A /* PokemonTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB074F62BD204CF00C27D6A /* PokemonTableViewCell.swift */; };
 		7EB074F92BD6220E00C27D6A /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB074F82BD6220E00C27D6A /* DetailViewController.swift */; };
 		7EB074FB2BD64C7100C27D6A /* PokemonSpecy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB074FA2BD64C7100C27D6A /* PokemonSpecy.swift */; };
+		7EB074FD2BD66E9600C27D6A /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB074FC2BD66E9600C27D6A /* NetworkManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -61,6 +62,7 @@
 		7EB074F62BD204CF00C27D6A /* PokemonTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokemonTableViewCell.swift; sourceTree = "<group>"; };
 		7EB074F82BD6220E00C27D6A /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		7EB074FA2BD64C7100C27D6A /* PokemonSpecy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokemonSpecy.swift; sourceTree = "<group>"; };
+		7EB074FC2BD66E9600C27D6A /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -116,6 +118,7 @@
 				7EB074C02BCF913200C27D6A /* HomeViewController.swift */,
 				7EB074EC2BCFC99700C27D6A /* MainViewController.swift */,
 				7EB074F82BD6220E00C27D6A /* DetailViewController.swift */,
+				7EB074FC2BD66E9600C27D6A /* NetworkManager.swift */,
 				7EB074F62BD204CF00C27D6A /* PokemonTableViewCell.swift */,
 				7EB074F22BD0B43300C27D6A /* Model */,
 				7EB074C22BCF913200C27D6A /* Main.storyboard */,
@@ -286,6 +289,7 @@
 			files = (
 				7EB074EF2BCFCA4D00C27D6A /* PokemonSprite.swift in Sources */,
 				7EB074F72BD204CF00C27D6A /* PokemonTableViewCell.swift in Sources */,
+				7EB074FD2BD66E9600C27D6A /* NetworkManager.swift in Sources */,
 				7EB074C12BCF913200C27D6A /* HomeViewController.swift in Sources */,
 				7EB074BD2BCF913200C27D6A /* AppDelegate.swift in Sources */,
 				7EB074BF2BCF913200C27D6A /* SceneDelegate.swift in Sources */,

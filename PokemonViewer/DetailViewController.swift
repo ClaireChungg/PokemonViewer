@@ -17,6 +17,7 @@ class DetailViewController: UIViewController {
     let descriptionIconImageView = UIImageView(
         image: UIImage(systemName: "diamond.inset.filled")
     )
+    private let networkManager: NetworkManager = .shared
     
     // MARK: - Methods
     override func viewDidLoad() {
@@ -28,7 +29,7 @@ class DetailViewController: UIViewController {
         
         let urlString = "https://pokeapi.co/api/v2/pokemon-species/\(pokemon?.sprite?.id ?? 1)"
         Task {
-            await fetchSpecies(from: urlString)
+            self.pokemon?.specy = await networkManager.fetchSpecy(from: urlString)
             setupDescriptionLable()
         }
     }
@@ -65,7 +66,7 @@ class DetailViewController: UIViewController {
         thumbnailImageView.layer.cornerRadius = 10
         thumbnailImageView.clipsToBounds = true
         Task {
-            thumbnailImageView.image = await fetchImage(from: pokemon?.sprite?.imageUrl)
+            thumbnailImageView.image = await networkManager.fetchImage(from: pokemon?.sprite?.imageUrl)
         }
         
         view.addSubview(thumbnailImageView)
@@ -100,29 +101,5 @@ class DetailViewController: UIViewController {
             descriptionLable.leadingAnchor.constraint(equalTo: descriptionIconImageView.trailingAnchor, constant: 10),
             descriptionLable.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -30),
         ])
-    }
-    
-    func fetchImage(from url: URL?) async -> UIImage? {
-        guard let url = url else { return nil }
-        do {
-            let (data, _) = try await URLSession.shared.data(from: url)
-            guard let image = UIImage(data: data) else { return nil }
-            return image
-        } catch {
-            print(String(describing: error))
-        }
-        return nil
-    }
-    
-    func fetchSpecies(from urlString: String) async {
-        guard let url = URL(string: urlString) else { return }
-        do {
-            let (data, _) = try await URLSession.shared.data(from: url)
-            let pokemonSpecy = try JSONDecoder().decode(PokemonSpecy.self, from: data)
-            self.pokemon?.specy = pokemonSpecy
-        } catch {
-            print(String(describing: error))
-        }
-        return
     }
 }
