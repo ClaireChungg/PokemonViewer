@@ -17,6 +17,7 @@ class DetailViewController: UIViewController {
     let descriptionIconImageView = UIImageView(
         image: UIImage(systemName: "diamond.inset.filled")
     )
+    let activityIndicator = UIActivityIndicatorView(style: .large)
     private let networkManager: NetworkManager = .shared
     
     // MARK: - Methods
@@ -26,11 +27,14 @@ class DetailViewController: UIViewController {
         
         setupNameAndIdLabels()
         setupImageView()
+        setupActivityIndicator()
         
         let urlString = "https://pokeapi.co/api/v2/pokemon-species/\(pokemon?.sprite?.id ?? 1)"
         Task {
+            activityIndicator.startAnimating()
             self.pokemon?.specy = await networkManager.fetchSpecy(from: urlString)
             setupDescriptionLable()
+            activityIndicator.stopAnimating()
         }
     }
     
@@ -100,6 +104,18 @@ class DetailViewController: UIViewController {
             descriptionLable.topAnchor.constraint(equalTo: descriptionIconImageView.topAnchor),
             descriptionLable.leadingAnchor.constraint(equalTo: descriptionIconImageView.trailingAnchor, constant: 10),
             descriptionLable.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -30),
+        ])
+    }
+    
+    private func setupActivityIndicator() {
+        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
+        activityIndicator.hidesWhenStopped = true
+        
+        view.addSubview(activityIndicator)
+        
+        NSLayoutConstraint.activate([
+            activityIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            activityIndicator.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -30)
         ])
     }
 }
