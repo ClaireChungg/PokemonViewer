@@ -35,10 +35,6 @@ extension PokemonSpecy {
     struct FlavorText: Hashable, Codable {
         var flavorText: String
         var language: LanguageDetail
-        enum CodingKeys: String, CodingKey {
-            case flavorText = "flavor_text"
-            case language
-        }
     }
     
     struct LanguageDetail: Hashable, Codable {
@@ -53,5 +49,12 @@ extension PokemonSpecy {
         case name
         case genera
         case flavorTextEntries = "flavor_text_entries"
+    }
+}
+
+extension PokemonSpecy.FlavorText {
+    enum CodingKeys: String, CodingKey {
+        case flavorText = "flavor_text"
+        case language
     }
 }
