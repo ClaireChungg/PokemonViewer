@@ -11,4 +11,5 @@ struct Pokemon: Codable {
     var name: String
     var url: URL?
     var sprite: PokemonSprite?
+    var specy: PokemonSpecy?
 }
