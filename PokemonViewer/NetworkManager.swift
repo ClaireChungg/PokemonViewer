@@ -12,8 +12,8 @@ class NetworkManager {
     
     private let imageCache = NSCache<NSURL, UIImage>()
     
-    func fetchData() async -> [Pokemon] {
-        guard let url = URL(string: "https://pokeapi.co/api/v2/pokemon") else { return [] }
+    func fetchData(_ offset: Int) async -> [Pokemon] {
+        guard let url = URL(string: "https://pokeapi.co/api/v2/pokemon/?offset=\(offset)") else { return [] }
         struct PokemonResponse: Codable {
             var results: [Pokemon]
         }
