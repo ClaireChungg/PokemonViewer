@@ -18,9 +18,8 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         super.viewDidLoad()
         self.setupTableView()
         
-        let urlString = "https://pokeapi.co/api/v2/pokemon"
         Task {
-            self.pokemons = await networkManager.fetchData(from: urlString)
+            self.pokemons = await networkManager.fetchData()
             tableView.reloadData()
         }
     }
@@ -65,6 +64,7 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
     
     // MARK: - UITableViewDelegate
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
         let detailViewController = DetailViewController()
         detailViewController.pokemon = pokemons[indexPath.row]
         navigationController?.pushViewController(detailViewController, animated: true)

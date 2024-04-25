@@ -12,8 +12,8 @@ class NetworkManager {
     
     private let imageCache = NSCache<NSURL, UIImage>()
     
-    func fetchData(from urlString: String) async -> [Pokemon] {
-        guard let url = URL(string: urlString) else { return [] }
+    func fetchData() async -> [Pokemon] {
+        guard let url = URL(string: "https://pokeapi.co/api/v2/pokemon") else { return [] }
         struct PokemonResponse: Codable {
             var results: [Pokemon]
         }
@@ -56,8 +56,8 @@ class NetworkManager {
         return nil
     }
     
-    func fetchSpecy(from urlString: String) async -> PokemonSpecy? {
-        guard let url = URL(string: urlString) else { return nil }
+    func fetchSpecy(from id: Int) async -> PokemonSpecy? {
+        guard let url = URL(string: "https://pokeapi.co/api/v2/pokemon-species/\(id)") else { return nil }
         do {
             let (data, _) = try await URLSession.shared.data(from: url)
             let pokemonSpecy = try JSONDecoder().decode(PokemonSpecy.self, from: data)

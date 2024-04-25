@@ -29,10 +29,10 @@ class DetailViewController: UIViewController {
         setupImageView()
         setupActivityIndicator()
         
-        let urlString = "https://pokeapi.co/api/v2/pokemon-species/\(pokemon?.sprite?.id ?? 1)"
+        let id = pokemon?.sprite?.id ?? 1
         Task {
             activityIndicator.startAnimating()
-            self.pokemon?.specy = await networkManager.fetchSpecy(from: urlString)
+            self.pokemon?.specy = await networkManager.fetchSpecy(from: id)
             setupDescriptionLable()
             activityIndicator.stopAnimating()
         }
@@ -51,7 +51,7 @@ class DetailViewController: UIViewController {
         nameLabel.font = UIFont.systemFont(ofSize: 24, weight: .bold)
         
         idLabel.translatesAutoresizingMaskIntoConstraints = false
-        idLabel.text = "#" + String(format: "%04d", pokemon?.sprite?.id ?? 0 )
+        idLabel.text = "#\(String(format: "%04d", pokemon?.sprite?.id ?? 0 ))"
         idLabel.font = UIFont.systemFont(ofSize: 24)
         idLabel.textColor = .darkGray
         
