@@ -33,9 +33,26 @@ class DetailViewController: UIViewController {
         Task {
             activityIndicator.startAnimating()
             self.pokemon?.specy = await networkManager.fetchSpecy(from: id)
+            if self.pokemon?.specy == nil {
+                showRetryAlert()
+            }
             setupDescriptionLable()
             activityIndicator.stopAnimating()
         }
+    }
+    
+    private func showRetryAlert() {
+        let alert = UIAlertController(title: "Error", message: "Failed to load data", preferredStyle: .alert)
+        
+        alert.addAction(UIAlertAction(title: "Try Again", style: .default, handler: { [weak self] _ in
+            self?.viewDidLoad()
+        }))
+        
+        alert.addAction(UIAlertAction(title: "Back", style: .cancel, handler: { [weak self] _ in
+            self?.navigationController?.popViewController(animated: true)
+        }))
+        
+        present(alert, animated: true, completion: nil)
     }
     
     private func setupNameAndIdLabels() {
