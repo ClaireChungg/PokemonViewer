@@ -19,7 +19,7 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         self.setupTableView()
         
         Task {
-            self.pokemons = await networkManager.fetchData()
+            self.pokemons = await networkManager.fetchData(0)
             tableView.reloadData()
         }
     }
@@ -68,5 +68,15 @@ class MainViewController: UIViewController, UITableViewDataSource, UITableViewDe
         let detailViewController = DetailViewController()
         detailViewController.pokemon = pokemons[indexPath.row]
         navigationController?.pushViewController(detailViewController, animated: true)
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if indexPath.row == pokemons.count - 1 && pokemons[indexPath.row].sprite != nil {
+            let offset = pokemons.count
+            Task {
+                pokemons.append(contentsOf: await networkManager.fetchData(offset))
+                tableView.reloadData()
+            }
+        }
     }
 }
